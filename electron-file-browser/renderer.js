@@ -10,6 +10,9 @@ const currentPathElement = document.getElementById('current-path');
 // DOM element for path breadcrumbs
 const pathBreadcrumbsElement = document.getElementById('path-breadcrumbs');
 
+// DOM element for disk selector
+const diskSelector = document.getElementById('disk-selector');
+
 // Current directory path
 let currentPath = '/';
 
@@ -361,6 +364,27 @@ async function loadDirectoryContents(path) {
     // Update the navigation menu to show current directory contents
     updateNavigationMenu(path);
 
+    // Update the disk selector to reflect current drive
+    if (os.platform() === 'win32') {
+      // Extract drive letter from current path for Windows
+      const pathParts = path.replace(/\\/g, '/').split('/');
+      if (pathParts.length > 0) {
+        const drivePart = pathParts[0];
+        if (drivePart && diskSelector.querySelector(`option[value="${drivePart}/"]`)) {
+          diskSelector.value = `${drivePart}/`;
+        } else {
+          diskSelector.value = ""; // Reset if not a valid drive
+        }
+      }
+    } else {
+      // For Unix-like systems, set root if path is root
+      if (path === '/') {
+        diskSelector.value = '/';
+      } else {
+        diskSelector.value = ""; // Reset if not root
+      }
+    }
+
     const items = await ipcRenderer.invoke('get-directory-contents', path);
 
     // Clear existing contents
@@ -409,11 +433,49 @@ async function loadDirectoryContents(path) {
   }
 }
 
+// Function to populate disk selector
+async function populateDiskSelector() {
+  try {
+    const drives = await ipcRenderer.invoke('get-drives');
+    
+    // Clear existing options except the first one
+    while (diskSelector.options.length > 1) {
+      diskSelector.remove(1);
+    }
+    
+    // Add drives to the selector
+    drives.forEach(drive => {
+      const option = document.createElement('option');
+      option.value = drive;
+      option.textContent = drive;
+      diskSelector.appendChild(option);
+    });
+    
+    // Set the current path as selected if it's a drive
+    if (drives.includes(currentPath)) {
+      diskSelector.value = currentPath;
+    }
+  } catch (error) {
+    console.error('Error populating disk selector:', error);
+  }
+}
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
   // Set initial directory contents to root and update navigation menu
   loadDirectoryContents(currentPath);
   createPathBreadcrumbs(currentPath);
+  populateDiskSelector(); // Populate the disk selector
+  
+  // Add event listener for disk selector
+  diskSelector.addEventListener('change', (event) => {
+    const selectedDrive = event.target.value;
+    if (selectedDrive) {
+      currentPath = selectedDrive;
+      loadDirectoryContents(currentPath);
+      createPathBreadcrumbs(currentPath);
+    }
+  });
 });
 
 // Add navigation functionality (to go back to parent directory)
