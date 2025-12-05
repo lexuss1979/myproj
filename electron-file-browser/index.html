@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electron File Browser</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 h-screen flex flex-col">
+  <div class="bg-gray-800 text-white p-4">
+    <h1 class="text-xl font-bold">Electron File Browser</h1>
+  </div>
+  
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Left Panel: Navigation Menu -->
+    <div class="w-1/3 bg-white border-r border-gray-300 flex flex-col">
+      <div class="p-3 bg-gray-100 border-b border-gray-300">
+        <h2 class="font-semibold">Navigation</h2>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-2" id="navigation-menu">
+        <!-- Navigation menu items will be populated here -->
+        <div class="space-y-1" id="nav-menu-container">
+          <button class="w-full flex items-center p-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200 nav-item" data-path="/">
+            <svg class="w-5 h-5 mr-3 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
+            </svg>
+            <span>/</span>
+          </button>
+        </div>
+      </nav>
+    </div>
+    
+    <!-- Right Panel: Directory Contents -->
+    <div class="w-2/3 bg-white flex flex-col">
+      <div class="p-3 bg-gray-100 border-b border-gray-300 flex items-center">
+        <span class="font-semibold mr-2">Path:</span>
+        <div id="path-breadcrumbs" class="flex flex-wrap gap-1 flex-grow">
+          <!-- Path badges will be populated here -->
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto p-2" id="directory-contents">
+        <!-- Directory contents will be populated here -->
+        <div class="text-center text-gray-500 py-10">
+          Select a drive or directory to view its contents
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="bg-gray-800 text-white p-2 text-sm text-center">
+    Electron File Browser - Built with Radix UI and Tailwind CSS
+  </div>
+
+  <script src="./renderer.js"></script>
+</body>
+</html>

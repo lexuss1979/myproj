@@ -1,0 +1,87 @@
+/* Custom styles for the Electron File Browser */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+.drive-item, .directory-item, .nav-item {
+  transition: background-color 0.2s;
+}
+
+.drive-item:hover, .directory-item:hover, .nav-item:hover {
+  background-color: #f3f4f6;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.scrollbar-thumb-rounded {
+  scrollbar-color: #cbd5e0 #f1f1f1;
+}
+
+/* For Webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+
+/* SVG icon styles */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.directory-item, .drive-item, .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Navigation menu specific styles */
+#navigation-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item {
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 0.125rem;
+}
+
+.nav-item:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+}
+
+/* Header styles for navigation menu sections */
+.nav-section-header {
+  padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+  margin-top: 0.5rem;
+}
