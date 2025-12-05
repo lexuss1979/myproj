@@ -59,26 +59,28 @@ ipcMain.handle('get-drives', async () => {
   let drives = [];
   
   if (platform === 'win32') {
-    // On Windows, get drive letters
-    const systemRoot = process.env.SystemDrive || 'C:';
-    drives = ['C:/', 'D:/']; // Add more if needed, or dynamically determine
+    // On Windows, dynamically get all available drives
+    const fs = require('fs');
+    
+    // Common Windows drive letters
+    const driveLetters = ['A:', 'B:', 'C:', 'D:', 'E:', 'F:', 'G:', 'H:', 'I:', 'J:', 'K:', 'L:', 'M:', 'N:', 'O:', 'P:', 'Q:', 'R:', 'S:', 'T:', 'U:', 'V:', 'W:', 'X:', 'Y:', 'Z:'];
+    
+    for (const letter of driveLetters) {
+      const drivePath = letter + '/';
+      try {
+        await stat(drivePath);
+        drives.push(drivePath);
+      } catch (error) {
+        // Skip if drive doesn't exist or isn't accessible
+        continue;
+      }
+    }
   } else {
     // On Unix-like systems, root is the main drive
     drives = ['/'];
   }
   
-  // Validate drives exist
-  const validDrives = [];
-  for (const drive of drives) {
-    try {
-      await stat(drive);
-      validDrives.push(drive);
-    } catch (error) {
-      // Skip if drive doesn't exist
-    }
-  }
-  
-  return validDrives;
+  return drives;
 });
 
 ipcMain.handle('get-directory-contents', async (event, path) => {

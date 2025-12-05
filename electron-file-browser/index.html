@@ -33,10 +33,18 @@
     
     <!-- Right Panel: Directory Contents -->
     <div class="w-2/3 bg-white flex flex-col">
-      <div class="p-3 bg-gray-100 border-b border-gray-300 flex items-center">
-        <span class="font-semibold mr-2">Path:</span>
-        <div id="path-breadcrumbs" class="flex flex-wrap gap-1 flex-grow">
-          <!-- Path badges will be populated here -->
+      <div class="p-3 bg-gray-100 border-b border-gray-300 flex items-center justify-between">
+        <div class="flex items-center">
+          <span class="font-semibold mr-2">Path:</span>
+          <div id="path-breadcrumbs" class="flex flex-wrap gap-1 flex-grow">
+            <!-- Path badges will be populated here -->
+          </div>
+        </div>
+        <div class="disk-selection">
+          <select id="disk-selector" class="ml-2 p-1 border rounded">
+            <option value="">Select Disk</option>
+            <!-- Options will be populated by JavaScript -->
+          </select>
         </div>
       </div>
       <div class="flex-1 overflow-y-auto p-2" id="directory-contents">
